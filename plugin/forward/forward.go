@@ -42,6 +42,7 @@ type Forward struct {
 	maxfails      uint32
 	expire        time.Duration
 	maxConcurrent int64
+	disableDnstap bool
 
 	opts options // also here for testing
 
@@ -68,6 +69,9 @@ func (f *Forward) SetProxy(p *Proxy) {
 
 // SetTapPlugin appends one or more dnstap plugins to the tap plugin list.
 func (f *Forward) SetTapPlugin(tapPlugin *dnstap.Dnstap) {
+	if f.disableDnstap {
+		return
+	}
 	f.tapPlugins = append(f.tapPlugins, tapPlugin)
 	if nextPlugin, ok := tapPlugin.Next.(*dnstap.Dnstap); ok {
 		f.SetTapPlugin(nextPlugin)

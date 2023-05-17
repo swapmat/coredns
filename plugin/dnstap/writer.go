@@ -35,6 +35,6 @@ func (w *ResponseWriter) WriteMsg(resp *dns.Msg) error {
 	}
 
 	msg.SetType(r, tap.Message_CLIENT_RESPONSE)
-	w.TapMessage(r)
+	w.TapMessage(r, nil)
 	return nil
 }

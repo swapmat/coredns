@@ -23,9 +23,9 @@ type Dnstap struct {
 }
 
 // TapMessage sends the message m to the dnstap interface.
-func (h Dnstap) TapMessage(m *tap.Message) {
+func (h Dnstap) TapMessage(m *tap.Message, extra []byte) {
 	t := tap.Dnstap_MESSAGE
-	h.io.Dnstap(&tap.Dnstap{Type: &t, Message: m, Identity: h.Identity, Version: h.Version})
+	h.io.Dnstap(&tap.Dnstap{Type: &t, Message: m, Identity: h.Identity, Version: h.Version, Extra: extra})
 }
 
 func (h Dnstap) tapQuery(w dns.ResponseWriter, query *dns.Msg, queryTime time.Time) {
@@ -38,7 +38,7 @@ func (h Dnstap) tapQuery(w dns.ResponseWriter, query *dns.Msg, queryTime time.Ti
 		q.QueryMessage = buf
 	}
 	msg.SetType(q, tap.Message_CLIENT_QUERY)
-	h.TapMessage(q)
+	h.TapMessage(q, nil)
 }
 
 // ServeDNS logs the client query and response to dnstap and passes the dnstap Context.
