@@ -45,7 +45,7 @@ func toDnstap(f *Forward, host string, state request.Request, opts proxy.Options
 			q.QueryMessage = buf
 		}
 		msg.SetType(q, tap.Message_FORWARDER_QUERY)
-		t.TapMessage(q)
+		t.TapMessage(q, nil)
 
 		// Response
 		if reply != nil {
@@ -59,7 +59,7 @@ func toDnstap(f *Forward, host string, state request.Request, opts proxy.Options
 			msg.SetResponseAddress(r, ta)
 			msg.SetResponseTime(r, time.Now())
 			msg.SetType(r, tap.Message_FORWARDER_RESPONSE)
-			t.TapMessage(r)
+			t.TapMessage(r, nil)
 		}
 	}
 }
